@@ -6,22 +6,22 @@ import math
 root = tk.Tk()
 root.title("Idle game")
 
-#size
+#size = taille de la fenetre
 windowsizeX = 200
 windowsizeY = 500
 root.minsize(windowsizeX, windowsizeY)
 root.maxsize(windowsizeX, windowsizeY)
 
 #variable
-money = 0
-click_power_base = 1
-multiplier = 1
-price = [10,500,7500]
-afk_price = [50,700,2500]
-afk_gain = 0
-update_time = 1000
-New_upgrade_price = 1000000
-if_New_upgrade_is_buy = 0
+money = 0                    # l'argent en temps réel
+click_power_base = 1         # Puissance de click
+multiplier = 1               # Multiplicateur d'argent
+price = [10,500,7500]        # prix des upgrade
+afk_price = [50,700,2500]    # prix des upgrade AFK
+afk_gain = 0                 # Puissance de gain AFK
+update_time = 1000           # Vitesse de la loop (1000 = Chaque sec)(Rafraichissement d'image)
+New_upgrade_price = 1000000  # prix de l'upgrade de nouvelle fenetre
+if_New_upgrade_is_buy = 0    # variable qui permet de ne pas devoir repayer la nouvelle fenetre
 
 #Fonction pour les répétition
 def MoneyConfig():
@@ -31,14 +31,14 @@ def TapConfig():
 def AFK_gameConfig():
     T_gain_sec.config(text = f"AFK gain: {math.floor(afk_gain*10)/10} x {multiplier}")
     
-#loop
+#loop = lorsque activé elle permet d'activé des gain par seconde. 
 def update_label():
     global money, afk_gain
     money = money + afk_gain * multiplier
     MoneyConfig()
     root.after(update_time, update_label)
 
-#click
+#click = premier bouton
 def on_click():
     global money, multiplier, click_power_base
     money = money + click_power_base*multiplier
@@ -111,7 +111,7 @@ def afk_upgrade2():
             MoneyConfig()
             AFK_gameConfig()
 
-#upgrade of multiplier and Time
+#upgrade of multiplier and Time = creation de la deuxieme fenetre
 def Window_2():
     global money, if_New_upgrade_is_buy
     if if_New_upgrade_is_buy == 0:
@@ -119,7 +119,7 @@ def Window_2():
         money -=New_upgrade_price
         MoneyConfig()
         
-#definition
+#definition = création de tout les bouton et zone de texte
 button1 = ttk.Button(root, text="Click Here", command = on_click)
 upgrade_button1 = ttk.Button(root, text = f"{price[0]} $ = +0.1",command = upgrade1)
 upgrade_button2 = ttk.Button(root, text = f"{price[1]} $ = +1"  ,command = upgrade2)
@@ -133,7 +133,7 @@ T_afk_upgrade = ttk.Label(root, text = "AFK Upgrade" )
 T_tap = ttk.Label(root, text = f"tap: {click_power_base} x {multiplier}")
 T_gain_sec = ttk.Label(root, text = f"AFK gain: {afk_gain}s x {multiplier}")
 
-#UI
+#UI = possition des bouton et zone de texte
 T_money.pack(pady = 10)
 T_tap.pack()
 T_gain_sec.pack()
@@ -147,4 +147,5 @@ afk_button1.pack(pady = 1)
 afk_button2.pack(pady = 1)
 Time_Mult_Upgrade_Button.pack(pady = 50)
 
+# loop qui permet d"actioner la fenetre
 root.mainloop()
